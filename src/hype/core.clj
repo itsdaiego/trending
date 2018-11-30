@@ -16,12 +16,20 @@
   (let [body (cheshire/decode (get content :body))]
     (get body "items")))
 
+(defn build-response
+  [item]
+  (hash-map :name (get item "name")
+            :description (get item "description")
+            :forks (get item "forks")
+            :watchers (get item "watchers")
+            :stargazers_count (get item "stargazers_count")))
+
 (defn parse-data
   [items]
   (map 
     (fn 
       [item] 
-      (hash-map :name (get item "name"))) 
+      (build-response item)) 
     items))
 
 (defn get-top-repos
